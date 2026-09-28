@@ -1,4 +1,5 @@
 {% extends 'galeria/base.html' %}
+{% load galeria_extras %}
 
 {% block title %}Galeria{% endblock %}
 
@@ -6,10 +7,17 @@
 
 <h2>Filtrar por categoria</h2>
 <ul>
-    <li><a href="{% url 'imagem_list' %}">Todas</a></li>
+    <li><a href="?{% url_replace categoria='' page='' %}">Todas</a></li>
     {% for categoria in categorias %}
-        <li><a href="?categoria={{ categoria.id }}">{{ categoria.nome }}</a></li>
+        <li><a href="?{% url_replace categoria=categoria.id page='' %}">{{ categoria.nome }}</a></li>
     {% endfor %}
+</ul>
+
+<h2>Ordenar por</h2>
+<ul>
+    <li><a href="?{% url_replace ordem='recentes' page='' %}">Mais recentes</a></li>
+    <li><a href="?{% url_replace ordem='antigas' page='' %}">Mais antigas</a></li>
+    <li><a href="?{% url_replace ordem='titulo' page='' %}">Título (A-Z)</a></li>
 </ul>
 
 <h2>Imagens</h2>
@@ -29,13 +37,13 @@
 {% if is_paginated %}
     <div>
         {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">Anterior</a>
         {% endif %}
 
         <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+            <a href="?{% url_replace page=page_obj.next_page_number %}">Próxima</a>
         {% endif %}
     </div>
 {% endif %}

@@ -1,8 +1,13 @@
 from django.shortcuts import render
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Imagem, Categoria
+
+ORDENACOES = {
+    'recentes': '-criado_em',
+    'antigas': 'criado_em',
+    'titulo': 'titulo',
+}
 
 
 class ImagemListView(ListView):
@@ -16,6 +21,8 @@ class ImagemListView(ListView):
         categoria_id = self.request.GET.get('categoria')
         if categoria_id:
             queryset = queryset.filter(categoria_id=categoria_id)
+        ordem = self.request.GET.get('ordem')
+        queryset = queryset.order_by(ORDENACOES.get(ordem, '-criado_em'))
         return queryset
 
     def get_context_data(self, **kwargs):
