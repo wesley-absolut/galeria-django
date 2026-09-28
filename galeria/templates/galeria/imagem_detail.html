@@ -1,0 +1,16 @@
+{% extends 'galeria/base.html' %}
+
+{% block title %}{{ imagem.titulo }}{% endblock %}
+
+{% block content %}
+
+<h2>{{ imagem.titulo }}</h2>
+<img src="{{ imagem.arquivo.url }}" alt="{{ imagem.titulo }}" width="400">
+<p>Categoria: {{ imagem.categoria.nome }}</p>
+<p>Cadastrada em: {{ imagem.criado_em }}</p>
+
+<a href="{% url 'imagem_update' imagem.pk %}">Editar</a>
+<a href="{% url 'imagem_delete' imagem.pk %}">Excluir</a>
+<a href="{% url 'imagem_list' %}">Voltar</a>
+
+{% endblock %}

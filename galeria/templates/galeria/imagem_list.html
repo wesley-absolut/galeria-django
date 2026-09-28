@@ -1,0 +1,43 @@
+{% extends 'galeria/base.html' %}
+
+{% block title %}Galeria{% endblock %}
+
+{% block content %}
+
+<h2>Filtrar por categoria</h2>
+<ul>
+    <li><a href="{% url 'imagem_list' %}">Todas</a></li>
+    {% for categoria in categorias %}
+        <li><a href="?categoria={{ categoria.id }}">{{ categoria.nome }}</a></li>
+    {% endfor %}
+</ul>
+
+<h2>Imagens</h2>
+<ul>
+    {% for imagem in imagens %}
+        <li>
+            <a href="{% url 'imagem_detail' imagem.pk %}">
+                <img src="{{ imagem.arquivo.url }}" alt="{{ imagem.titulo }}" width="150">
+                <p>{{ imagem.titulo }} — {{ imagem.categoria.nome }}</p>
+            </a>
+        </li>
+    {% empty %}
+        <li>Nenhuma imagem cadastrada.</li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+    <div>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}

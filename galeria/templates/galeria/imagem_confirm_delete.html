@@ -1,0 +1,17 @@
+{% extends 'galeria/base.html' %}
+
+{% block title %}Excluir Imagem{% endblock %}
+
+{% block content %}
+
+<h2>Excluir "{{ imagem.titulo }}"?</h2>
+<p>Essa ação não pode ser desfeita.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmar exclusão</button>
+</form>
+
+<a href="{% url 'imagem_list' %}">Cancelar</a>
+
+{% endblock %}
