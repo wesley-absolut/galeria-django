@@ -2,7 +2,167 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Galeria{% endblock %}</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #ffffff;
+            --texto: #1f2937;
+            --suave: #6b7280;
+            --borda: #e5e7eb;
+            --primaria: #4f46e5;
+            --primaria-escura: #4338ca;
+            --perigo: #dc2626;
+            --raio: 12px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--texto);
+            line-height: 1.6;
+        }
+
+        a { color: var(--primaria); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Cabeçalho */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--borda);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        header h1 { margin: 0; font-size: 1.25rem; }
+        header h1 a { color: var(--texto); }
+        header h1 a:hover { text-decoration: none; }
+        header nav a {
+            background: var(--primaria);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        header nav a:hover { background: var(--primaria-escura); text-decoration: none; }
+
+        main { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+
+        h2 { font-size: 1.1rem; margin: 0 0 12px; }
+        .secao { margin-bottom: 28px; }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            padding: 9px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--borda);
+            background: var(--card);
+            color: var(--texto);
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn:hover { background: #f3f4f6; text-decoration: none; }
+        .btn-primario { background: var(--primaria); border-color: var(--primaria); color: #fff; }
+        .btn-primario:hover { background: var(--primaria-escura); }
+        .btn-perigo { background: var(--perigo); border-color: var(--perigo); color: #fff; }
+        .btn-perigo:hover { background: #b91c1c; }
+        .acoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+
+        /* Filtros (chips) */
+        .chips { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+        .chips a {
+            display: inline-block;
+            padding: 5px 14px;
+            border: 1px solid var(--borda);
+            border-radius: 999px;
+            background: var(--card);
+            color: var(--texto);
+            font-size: 0.85rem;
+        }
+        .chips a:hover { border-color: var(--primaria); color: var(--primaria); text-decoration: none; }
+
+        /* Grade de imagens */
+        .grade {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: var(--raio);
+            overflow: hidden;
+            transition: transform .15s, box-shadow .15s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+        .card a { display: block; color: inherit; }
+        .card a:hover { text-decoration: none; }
+        .card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+        .card-info { padding: 12px 14px; }
+        .card-info strong { display: block; font-size: 0.95rem; }
+        .card-info span { font-size: 0.8rem; color: var(--suave); }
+        .vazio { color: var(--suave); grid-column: 1 / -1; }
+
+        /* Detalhe */
+        .painel {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: var(--raio);
+            padding: 24px;
+        }
+        .painel h2 { font-size: 1.4rem; }
+        .painel img { max-width: 100%; height: auto; border-radius: 8px; display: block; margin-bottom: 16px; }
+        .meta { color: var(--suave); font-size: 0.9rem; margin: 4px 0; }
+
+        /* Formulário */
+        .painel form p { margin: 0 0 16px; display: flex; flex-direction: column; gap: 6px; }
+        .painel label { font-weight: 500; font-size: 0.9rem; }
+        .painel input[type="text"],
+        .painel select,
+        .painel textarea {
+            padding: 10px 12px;
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            font: inherit;
+            background: #fff;
+        }
+        .painel input:focus, .painel select:focus, .painel textarea:focus {
+            outline: 2px solid var(--primaria);
+            border-color: transparent;
+        }
+        .painel input[type="file"] { font-size: 0.9rem; }
+        .helptext, .errorlist { font-size: 0.8rem; color: var(--suave); }
+        .errorlist { color: var(--perigo); list-style: none; padding: 0; margin: 0; }
+
+        /* Exclusão */
+        .painel.confirmar { max-width: 480px; margin: 40px auto; text-align: center; }
+        .painel.confirmar .acoes { justify-content: center; }
+
+        /* Paginação */
+        .paginacao {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 32px;
+            font-size: 0.9rem;
+            color: var(--suave);
+        }
+    </style>
 </head>
 <body>
     <header>

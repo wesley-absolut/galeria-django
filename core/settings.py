@@ -24,12 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e8wd14=^eb(op3kiezejdu%jf223vjd3xi_iynz*u)lim^ze%o'
+# Vem do arquivo .env; se faltar, o projeto nem sobe (KeyError), em vez de usar uma chave fixa no código.
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Só fica ligado se o .env tiver DEBUG=True; o padrão é desligado.
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+# Lista separada por vírgulas no .env, ex.: localhost,127.0.0.1
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -125,8 +128,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-# Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# Arquivos enviados pelo usuário (imagens)
+# https://docs.djangoproject.com/en/6.1/topics/files/
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

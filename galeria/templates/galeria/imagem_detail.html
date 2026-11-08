@@ -4,13 +4,17 @@
 
 {% block content %}
 
-<h2>{{ imagem.titulo }}</h2>
-<img src="{{ imagem.arquivo.url }}" alt="{{ imagem.titulo }}" width="400">
-<p>Categoria: {{ imagem.categoria.nome }}</p>
-<p>Cadastrada em: {{ imagem.criado_em }}</p>
+<div class="painel">
+    <h2>{{ imagem.titulo }}</h2>
+    <img src="{{ imagem.arquivo.url }}" alt="{{ imagem.titulo }}">
+    <p class="meta">Categoria: {{ imagem.categoria.nome }}</p>
+    <p class="meta">Cadastrada em: {{ imagem.criado_em }}</p>
 
-<a href="{% url 'imagem_update' imagem.pk %}">Editar</a>
-<a href="{% url 'imagem_delete' imagem.pk %}">Excluir</a>
-<a href="{% url 'imagem_list' %}">Voltar</a>
+    <div class="acoes">
+        <a class="btn btn-primario" href="{% url 'imagem_update' imagem.pk %}">Editar</a>
+        <a class="btn btn-perigo" href="{% url 'imagem_delete' imagem.pk %}">Excluir</a>
+        <a class="btn" href="{% url 'imagem_list' %}">Voltar</a>
+    </div>
+</div>
 
 {% endblock %}

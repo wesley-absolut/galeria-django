@@ -4,14 +4,17 @@
 
 {% block content %}
 
-<h2>{% if imagem %}Editar{% else %}Nova{% endif %} Imagem</h2>
+<div class="painel">
+    <h2>{% if imagem %}Editar{% else %}Nova{% endif %} Imagem</h2>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Salvar</button>
-</form>
-
-<a href="{% url 'imagem_list' %}">Cancelar</a>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="acoes">
+            <button type="submit" class="btn btn-primario">Salvar</button>
+            <a class="btn" href="{% url 'imagem_list' %}">Cancelar</a>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

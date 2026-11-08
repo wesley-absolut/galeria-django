@@ -4,14 +4,17 @@
 
 {% block content %}
 
-<h2>Excluir "{{ imagem.titulo }}"?</h2>
-<p>Essa ação não pode ser desfeita.</p>
+<div class="painel confirmar">
+    <h2>Excluir "{{ imagem.titulo }}"?</h2>
+    <p class="meta">Essa ação não pode ser desfeita.</p>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirmar exclusão</button>
-</form>
-
-<a href="{% url 'imagem_list' %}">Cancelar</a>
+    <form method="post">
+        {% csrf_token %}
+        <div class="acoes">
+            <button type="submit" class="btn btn-perigo">Confirmar exclusão</button>
+            <a class="btn" href="{% url 'imagem_list' %}">Cancelar</a>
+        </div>
+    </form>
+</div>
 
 {% endblock %}
